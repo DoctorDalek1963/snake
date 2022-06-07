@@ -7,7 +7,7 @@
 # <https://www.gnu.org/licenses/gpl-3.0.html>
 
 """A simple one-file snake game."""
-
+import argparse
 import enum
 import sys
 from random import randrange
@@ -24,16 +24,17 @@ class SnakeMainWindow(QMainWindow):
     """A simple main window class to contain the game."""
 
     grid_cell_size: int = 50
-    grid_width: int = 16
-    grid_height: int = 12
 
     colour_player: QColor = QColor(0xe7, 0x03, 0x03)  # Red
     colour_tail: QColor = QColor(0xfb, 0x41, 0x7c)  # Pink
     colour_apple: QColor = QColor(0x09, 0xdd, 0x01)  # Green
 
-    def __init__(self):
+    def __init__(self, width: int, height: int):
         """Create the main window."""
         super().__init__()
+
+        self.grid_width = width
+        self.grid_height = height
 
         # Random position near the middle
         self.pos_player: tuple[int, int] = (randrange(1, self.grid_width - 1), randrange(1, self.grid_height - 1))
@@ -184,8 +185,25 @@ class SnakeMainWindow(QMainWindow):
 
 def main() -> None:
     """Show the window."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-w',
+        '--width',
+        type=int,
+        required=False,
+        default=16
+    )
+    parser.add_argument(
+        '-H',
+        '--height',
+        type=int,
+        required=False,
+        default=12
+    )
+    args = parser.parse_args()
+
     app = QApplication([])
-    window = SnakeMainWindow()
+    window = SnakeMainWindow(args.width, args.height)
     window.show()
     sys.exit(app.exec_())
 
