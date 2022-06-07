@@ -125,13 +125,13 @@ class SnakeMainWindow(QMainWindow):
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         """Handle a QKeyEvent."""
-        if event.key() == Qt.Key_Up:
+        if event.key() == Qt.Key_Up and self.dir_player != Direction.DOWN:
             self.dir_player = Direction.UP
-        elif event.key() == Qt.Key_Down:
+        elif event.key() == Qt.Key_Down and self.dir_player != Direction.UP:
             self.dir_player = Direction.DOWN
-        elif event.key() == Qt.Key_Left:
+        elif event.key() == Qt.Key_Left and self.dir_player != Direction.RIGHT:
             self.dir_player = Direction.LEFT
-        elif event.key() == Qt.Key_Right:
+        elif event.key() == Qt.Key_Right and self.dir_player != Direction.LEFT:
             self.dir_player = Direction.RIGHT
         else:
             event.ignore()
