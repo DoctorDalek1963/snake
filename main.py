@@ -97,6 +97,11 @@ class SnakeMainWindow(QMainWindow):
         painter.setBrush(Qt.NoBrush)
 
         if self.game_over:
+            font = painter.font()
+            font.setPixelSize(48)
+            font.setBold(True)
+            painter.setFont(font)
+
             painter.drawText(
                 QRect(0, 0, self.width(), self.height()),
                 Qt.AlignCenter | Qt.AlignVCenter,
