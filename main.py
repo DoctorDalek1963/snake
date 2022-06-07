@@ -23,18 +23,18 @@ Direction = enum.Enum('Direction', 'UP DOWN LEFT RIGHT')
 class SnakeMainWindow(QMainWindow):
     """A simple main window class to contain the game."""
 
-    grid_cell_size: int = 50
-
     colour_player: QColor = QColor(0xe7, 0x03, 0x03)  # Red
     colour_tail: QColor = QColor(0xfb, 0x41, 0x7c)  # Pink
     colour_apple: QColor = QColor(0x09, 0xdd, 0x01)  # Green
 
-    def __init__(self, width: int, height: int):
+    def __init__(self, *, width: int, height: int, grid_cell_size: int, fps: int):
         """Create the main window."""
         super().__init__()
 
         self.grid_width = width
         self.grid_height = height
+        self.grid_cell_size = grid_cell_size
+        self.fps = fps
 
         self.pos_player: tuple[int, int] = (randrange(self.grid_width), randrange(self.grid_height))
 
@@ -52,7 +52,6 @@ class SnakeMainWindow(QMainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_game)
         self.timer_started = False
-        self.fps = 5
 
     def place_apple(self) -> None:
         """Place the apple in a place that isn't the same as the player position."""
@@ -185,6 +184,7 @@ class SnakeMainWindow(QMainWindow):
 def main() -> None:
     """Show the window."""
     parser = argparse.ArgumentParser()
+
     parser.add_argument(
         '-w',
         '--width',
@@ -199,13 +199,33 @@ def main() -> None:
         required=False,
         default=12
     )
+    parser.add_argument(
+        '-s',
+        '--cellsize',
+        type=int,
+        required=False,
+        default=50
+    )
+    parser.add_argument(
+        '-f',
+        '--fps',
+        type=int,
+        required=False,
+        default=5
+    )
+
     args = parser.parse_args()
 
     if args.width < 3 or args.height < 3:
         raise ValueError('Minimum board size is 3x3')
 
     app = QApplication([])
-    window = SnakeMainWindow(args.width, args.height)
+    window = SnakeMainWindow(
+        width=args.width,
+        height=args.height,
+        grid_cell_size=args.cellsize,
+        fps=args.fps
+    )
     window.show()
     sys.exit(app.exec_())
 
