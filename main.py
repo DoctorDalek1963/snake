@@ -10,8 +10,7 @@
 
 import enum
 import sys
-import random
-from random import randint
+from random import randrange
 
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QColor, QKeyEvent, QPainter, QPaintEvent, QPen
@@ -22,17 +21,18 @@ Direction = enum.Enum('Direction', 'UP DOWN LEFT RIGHT')
 
 
 class SnakeMainWindow(QMainWindow):
-    """A simple main window class to contain the game.
+    """A simple main window class to contain the game."""
 
-    The play space is a 10x10 grid.
-    """
+    grid_cell_size: int = 50
+    grid_width: int = 16
+    grid_height: int = 12
 
     def __init__(self):
         """Create the main window."""
         super().__init__()
 
         # Random position near the middle
-        self.pos_player: tuple[int, int] = (randint(2, 7), randint(2, 7))
+        self.pos_player: tuple[int, int] = (randrange(1, self.grid_width - 1), randrange(1, self.grid_height - 1))
 
         # The direction doesn't matter because it will be set when the player first moves
         self.dir_player: Direction = Direction.UP
@@ -40,12 +40,10 @@ class SnakeMainWindow(QMainWindow):
         self.pos_apple: tuple[int, int] = (0, 0)
         self.place_apple()
 
-        self.length_player: int = 0
-        self.grid_cell_size: int = 80
         self.colour_player: QColor = QColor(0xe7, 0x03, 0x03)  # Red
         self.colour_apple: QColor = QColor(0x09, 0xdd, 0x01)  # Green
 
-        self.setFixedSize(self.grid_cell_size * 10, self.grid_cell_size * 10)
+        self.setFixedSize(self.grid_cell_size * self.grid_width, self.grid_cell_size * self.grid_height)
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_game)
@@ -56,19 +54,23 @@ class SnakeMainWindow(QMainWindow):
         """Place the apple in a place that isn't the same as the player position."""
         # We don't want the apple to be in the same place as the player
         self.pos_apple = self.pos_player
+
         while self.pos_apple == self.pos_player:
-            self.pos_apple = (randint(0, 9), randint(0, 9))
+            self.pos_apple = (randrange(self.grid_width), randrange(self.grid_height))
 
     def update_game(self) -> None:
         """Update the game state."""
         if self.dir_player == Direction.UP:
-            self.pos_player = (self.pos_player[0], (self.pos_player[1] - 1) % 10)
+            self.pos_player = (self.pos_player[0], (self.pos_player[1] - 1) % self.grid_height)
         elif self.dir_player == Direction.DOWN:
-            self.pos_player = (self.pos_player[0], (self.pos_player[1] + 1) % 10)
+            self.pos_player = (self.pos_player[0], (self.pos_player[1] + 1) % self.grid_height)
         elif self.dir_player == Direction.LEFT:
-            self.pos_player = ((self.pos_player[0] - 1) % 10, self.pos_player[1])
+            self.pos_player = ((self.pos_player[0] - 1) % self.grid_width, self.pos_player[1])
         elif self.dir_player == Direction.RIGHT:
-            self.pos_player = ((self.pos_player[0] + 1) % 10, self.pos_player[1])
+            self.pos_player = ((self.pos_player[0] + 1) % self.grid_width, self.pos_player[1])
+
+        if self.pos_player == self.pos_apple:
+            self.place_apple()
 
         self.update()
 
