@@ -36,8 +36,7 @@ class SnakeMainWindow(QMainWindow):
         self.grid_width = width
         self.grid_height = height
 
-        # Random position near the middle
-        self.pos_player: tuple[int, int] = (randrange(1, self.grid_width - 1), randrange(1, self.grid_height - 1))
+        self.pos_player: tuple[int, int] = (randrange(self.grid_width), randrange(self.grid_height))
 
         # The direction doesn't matter because it will be set when the player first moves
         self.dir_player: Direction | None = None
@@ -94,7 +93,7 @@ class SnakeMainWindow(QMainWindow):
         self.game_over = False
         self.snake_parts = []
 
-        self.pos_player = (randrange(1, self.grid_width - 1), randrange(1, self.grid_height - 1))
+        self.pos_player = (randrange(self.grid_width), randrange(self.grid_height))
         self.dir_player = None
         self.place_apple()
 
@@ -201,6 +200,9 @@ def main() -> None:
         default=12
     )
     args = parser.parse_args()
+
+    if args.width < 3 or args.height < 3:
+        raise ValueError('Minimum board size is 3x3')
 
     app = QApplication([])
     window = SnakeMainWindow(args.width, args.height)
