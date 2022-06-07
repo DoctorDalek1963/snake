@@ -13,7 +13,7 @@ import sys
 from random import randrange
 
 from PyQt5.QtCore import QRect, Qt, QTimer
-from PyQt5.QtGui import QColor, QKeyEvent, QPainter, QPaintEvent, QPen
+from PyQt5.QtGui import QColor, QKeyEvent, QKeySequence, QPainter, QPaintEvent, QPen
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 
@@ -39,7 +39,7 @@ class SnakeMainWindow(QMainWindow):
         self.pos_player: tuple[int, int] = (randrange(1, self.grid_width - 1), randrange(1, self.grid_height - 1))
 
         # The direction doesn't matter because it will be set when the player first moves
-        self.dir_player: Direction = Direction.UP
+        self.dir_player: Direction | None = None
 
         self.pos_apple: tuple[int, int] = (0, 0)
         self.place_apple()
@@ -51,7 +51,7 @@ class SnakeMainWindow(QMainWindow):
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_game)
-        self._timer_started = False
+        self.timer_started = False
         self.fps = 5
 
     def place_apple(self) -> None:
@@ -87,6 +87,18 @@ class SnakeMainWindow(QMainWindow):
         self.snake_parts.append(self.pos_player)
 
         self.update()
+
+    def reset_game(self) -> None:
+        """Reset the game."""
+        self.game_over = False
+        self.snake_parts = []
+
+        self.pos_player = (randrange(1, self.grid_width - 1), randrange(1, self.grid_height - 1))
+        self.dir_player = None
+        self.place_apple()
+
+        self.timer_started = False
+        self.timer.stop()
 
     def paintEvent(self, event: QPaintEvent) -> None:
         """Handle a QPaintEvent by drawing everything on the grid."""
@@ -145,24 +157,33 @@ class SnakeMainWindow(QMainWindow):
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         """Handle a QKeyEvent."""
-        if event.key() == Qt.Key_Up and self.dir_player != Direction.DOWN:
+        if event.key() in (Qt.Key_Up, Qt.Key_W) and self.dir_player != Direction.DOWN:
             self.dir_player = Direction.UP
-        elif event.key() == Qt.Key_Down and self.dir_player != Direction.UP:
+
+        elif event.key() in (Qt.Key_Down, Qt.Key_S) and self.dir_player != Direction.UP:
             self.dir_player = Direction.DOWN
-        elif event.key() == Qt.Key_Left and self.dir_player != Direction.RIGHT:
+
+        elif event.key() in (Qt.Key_Left, Qt.Key_A) and self.dir_player != Direction.RIGHT:
             self.dir_player = Direction.LEFT
-        elif event.key() == Qt.Key_Right and self.dir_player != Direction.LEFT:
+
+        elif event.key() in (Qt.Key_Right, Qt.Key_D) and self.dir_player != Direction.LEFT:
             self.dir_player = Direction.RIGHT
+
+        elif event.matches(QKeySequence.Refresh):
+            self.reset_game()
+            self.update()
+            return
+
         else:
             event.ignore()
             return
 
-        if not self._timer_started:
+        if not self.timer_started:
             self.timer.start(int(1000 / self.fps))
 
 
 def main() -> None:
-    """."""
+    """Show the window."""
     app = QApplication([])
     window = SnakeMainWindow()
     window.show()
