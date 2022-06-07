@@ -27,6 +27,9 @@ class SnakeMainWindow(QMainWindow):
     grid_width: int = 16
     grid_height: int = 12
 
+    colour_player: QColor = QColor(0xe7, 0x03, 0x03)  # Red
+    colour_apple: QColor = QColor(0x09, 0xdd, 0x01)  # Green
+
     def __init__(self):
         """Create the main window."""
         super().__init__()
@@ -39,9 +42,6 @@ class SnakeMainWindow(QMainWindow):
 
         self.pos_apple: tuple[int, int] = (0, 0)
         self.place_apple()
-
-        self.colour_player: QColor = QColor(0xe7, 0x03, 0x03)  # Red
-        self.colour_apple: QColor = QColor(0x09, 0xdd, 0x01)  # Green
 
         self.setFixedSize(self.grid_cell_size * self.grid_width, self.grid_cell_size * self.grid_height)
 
