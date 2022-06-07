@@ -12,7 +12,7 @@ import enum
 import sys
 from random import randrange
 
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import QRect, Qt, QTimer
 from PyQt5.QtGui import QColor, QKeyEvent, QPainter, QPaintEvent, QPen
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
@@ -45,6 +45,7 @@ class SnakeMainWindow(QMainWindow):
         self.place_apple()
 
         self.snake_parts: list[tuple[int, int]] = []
+        self.game_over = False
 
         self.setFixedSize(self.grid_cell_size * self.grid_width, self.grid_cell_size * self.grid_height)
 
@@ -63,6 +64,12 @@ class SnakeMainWindow(QMainWindow):
 
     def update_game(self) -> None:
         """Update the game state."""
+        if self.pos_player in self.snake_parts[:-1]:
+            self.game_over = True
+            self.timer.stop()
+            self.update()
+            return
+
         if self.pos_player == self.pos_apple:
             self.snake_parts.append(self.pos_player)
             self.place_apple()
@@ -88,6 +95,14 @@ class SnakeMainWindow(QMainWindow):
 
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setBrush(Qt.NoBrush)
+
+        if self.game_over:
+            painter.drawText(
+                QRect(0, 0, self.width(), self.height()),
+                Qt.AlignCenter | Qt.AlignVCenter,
+                f'GAME OVER\n\nScore: {len(self.snake_parts)}'
+            )
+            return
 
         # Draw tail
         painter.setPen(QPen(self.colour_tail))
