@@ -28,6 +28,7 @@ class SnakeMainWindow(QMainWindow):
     grid_height: int = 12
 
     colour_player: QColor = QColor(0xe7, 0x03, 0x03)  # Red
+    colour_tail: QColor = QColor(0xfb, 0x41, 0x7c)  # Pink
     colour_apple: QColor = QColor(0x09, 0xdd, 0x01)  # Green
 
     def __init__(self):
@@ -42,6 +43,8 @@ class SnakeMainWindow(QMainWindow):
 
         self.pos_apple: tuple[int, int] = (0, 0)
         self.place_apple()
+
+        self.snake_parts: list[tuple[int, int]] = []
 
         self.setFixedSize(self.grid_cell_size * self.grid_width, self.grid_cell_size * self.grid_height)
 
@@ -60,6 +63,10 @@ class SnakeMainWindow(QMainWindow):
 
     def update_game(self) -> None:
         """Update the game state."""
+        if self.pos_player == self.pos_apple:
+            self.snake_parts.append(self.pos_player)
+            self.place_apple()
+
         if self.dir_player == Direction.UP:
             self.pos_player = (self.pos_player[0], (self.pos_player[1] - 1) % self.grid_height)
         elif self.dir_player == Direction.DOWN:
@@ -69,32 +76,10 @@ class SnakeMainWindow(QMainWindow):
         elif self.dir_player == Direction.RIGHT:
             self.pos_player = ((self.pos_player[0] + 1) % self.grid_width, self.pos_player[1])
 
-        if self.pos_player == self.pos_apple:
-            self.place_apple()
+        self.snake_parts = self.snake_parts[1:]
+        self.snake_parts.append(self.pos_player)
 
         self.update()
-
-    def draw_player(self, painter: QPainter) -> None:
-        """Draw the player on the grid."""
-        painter.setPen(QPen(self.colour_player))
-        painter.fillRect(
-            self.pos_player[0] * self.grid_cell_size,
-            self.pos_player[1] * self.grid_cell_size,
-            self.grid_cell_size,
-            self.grid_cell_size,
-            self.colour_player
-        )
-
-    def draw_apple(self, painter: QPainter) -> None:
-        """Draw the apple on the grid."""
-        painter.setPen(QPen(self.colour_apple))
-        painter.fillRect(
-            int(self.pos_apple[0] * self.grid_cell_size + 0.15 * self.grid_cell_size),
-            int(self.pos_apple[1] * self.grid_cell_size + 0.15 * self.grid_cell_size),
-            int(0.7 * self.grid_cell_size),
-            int(0.7 * self.grid_cell_size),
-            self.colour_apple
-        )
 
     def paintEvent(self, event: QPaintEvent) -> None:
         """Handle a QPaintEvent by drawing everything on the grid."""
@@ -104,8 +89,36 @@ class SnakeMainWindow(QMainWindow):
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setBrush(Qt.NoBrush)
 
-        self.draw_apple(painter)
-        self.draw_player(painter)
+        # Draw tail
+        painter.setPen(QPen(self.colour_tail))
+        for part in self.snake_parts:
+            painter.fillRect(
+                int(part[0] * self.grid_cell_size + 0.15 * self.grid_cell_size),
+                int(part[1] * self.grid_cell_size + 0.15 * self.grid_cell_size),
+                int(0.7 * self.grid_cell_size),
+                int(0.7 * self.grid_cell_size),
+                self.colour_tail
+            )
+
+        # Draw apple
+        painter.setPen(QPen(self.colour_apple))
+        painter.fillRect(
+            int(self.pos_apple[0] * self.grid_cell_size + 0.15 * self.grid_cell_size),
+            int(self.pos_apple[1] * self.grid_cell_size + 0.15 * self.grid_cell_size),
+            int(0.7 * self.grid_cell_size),
+            int(0.7 * self.grid_cell_size),
+            self.colour_apple
+        )
+
+        # Draw player head
+        painter.setPen(QPen(self.colour_player))
+        painter.fillRect(
+            self.pos_player[0] * self.grid_cell_size,
+            self.pos_player[1] * self.grid_cell_size,
+            self.grid_cell_size,
+            self.grid_cell_size,
+            self.colour_player
+        )
 
         painter.end()
         event.accept()
