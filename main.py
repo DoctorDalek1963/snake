@@ -113,10 +113,10 @@ class SnakeMainWindow(QMainWindow):
         painter.setPen(QPen(self.colour_tail))
         for part in self.snake_parts:
             painter.fillRect(
-                int(part[0] * self.grid_cell_size + 0.15 * self.grid_cell_size),
-                int(part[1] * self.grid_cell_size + 0.15 * self.grid_cell_size),
-                int(0.7 * self.grid_cell_size),
-                int(0.7 * self.grid_cell_size),
+                int(part[0] * self.grid_cell_size + 0.1 * self.grid_cell_size),
+                int(part[1] * self.grid_cell_size + 0.1 * self.grid_cell_size),
+                int(0.8 * self.grid_cell_size),
+                int(0.8 * self.grid_cell_size),
                 self.colour_tail
             )
 
