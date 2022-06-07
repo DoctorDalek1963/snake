@@ -87,10 +87,10 @@ class SnakeMainWindow(QMainWindow):
         """Draw the apple on the grid."""
         painter.setPen(QPen(self.colour_apple))
         painter.fillRect(
-            self.pos_apple[0] * self.grid_cell_size,
-            self.pos_apple[1] * self.grid_cell_size,
-            self.grid_cell_size,
-            self.grid_cell_size,
+            int(self.pos_apple[0] * self.grid_cell_size + 0.15 * self.grid_cell_size),
+            int(self.pos_apple[1] * self.grid_cell_size + 0.15 * self.grid_cell_size),
+            int(0.7 * self.grid_cell_size),
+            int(0.7 * self.grid_cell_size),
             self.colour_apple
         )
 
@@ -102,8 +102,8 @@ class SnakeMainWindow(QMainWindow):
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setBrush(Qt.NoBrush)
 
-        self.draw_player(painter)
         self.draw_apple(painter)
+        self.draw_player(painter)
 
         painter.end()
         event.accept()
