@@ -1,0 +1,9 @@
+clang++
+-std=c++17
+-stdlib=libc+++
+-I.
+-isystem/usr/include/x86_64-linux-gnu/qt5
+-isystem/usr/include/x86_64-linux-gnu/qt5/QtWidgets
+-isystem/usr/include/x86_64-linux-gnu/qt5/QtGui
+-isystem/usr/include/x86_64-linux-gnu/qt5/QtCore
+-I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
