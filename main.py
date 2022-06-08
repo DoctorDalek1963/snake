@@ -165,7 +165,7 @@ class SnakeMainWindow(QMainWindow):
 
         painter.drawText(
             QRect(10, 10, 100, 30),
-            Qt.AlignLeft,
+            Qt.AlignLeft | Qt.AlignTop,
             f'Score: {self.score}'
         )
 
