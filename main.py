@@ -7,6 +7,7 @@
 # <https://www.gnu.org/licenses/gpl-3.0.html>
 
 """A simple one-file snake game."""
+
 import argparse
 import enum
 import sys
@@ -60,6 +61,11 @@ class SnakeMainWindow(QMainWindow):
 
         while self.pos_apple == self.pos_player:
             self.pos_apple = (randrange(self.grid_width), randrange(self.grid_height))
+
+    @property
+    def score(self) -> str:
+        """Return the player's score."""
+        return str(max(0, len(self.snake_parts) - 1))
 
     def update_game(self) -> None:
         """Update the game state."""
@@ -116,7 +122,7 @@ class SnakeMainWindow(QMainWindow):
             painter.drawText(
                 QRect(0, 0, self.width(), self.height()),
                 Qt.AlignCenter | Qt.AlignVCenter,
-                f'GAME OVER\n\nScore: {len(self.snake_parts)}'
+                f'GAME OVER\n\nScore: {self.score}'
             )
             return
 
@@ -149,6 +155,18 @@ class SnakeMainWindow(QMainWindow):
             self.grid_cell_size,
             self.grid_cell_size,
             self.colour_player
+        )
+
+        painter.setPen(QPen(QColor(0, 0, 0)))
+
+        font = painter.font()
+        font.setPixelSize(24)
+        painter.setFont(font)
+
+        painter.drawText(
+            QRect(10, 10, 100, 30),
+            Qt.AlignLeft,
+            f'Score: {self.score}'
         )
 
         painter.end()
