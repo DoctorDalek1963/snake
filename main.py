@@ -176,15 +176,19 @@ class SnakeMainWindow(QMainWindow):
         """Handle a QKeyEvent."""
         if event.key() in (Qt.Key_Up, Qt.Key_W) and self.dir_player != Direction.DOWN:
             self.dir_player = Direction.UP
+            self.update_game()
 
         elif event.key() in (Qt.Key_Down, Qt.Key_S) and self.dir_player != Direction.UP:
             self.dir_player = Direction.DOWN
+            self.update_game()
 
         elif event.key() in (Qt.Key_Left, Qt.Key_A) and self.dir_player != Direction.RIGHT:
             self.dir_player = Direction.LEFT
+            self.update_game()
 
         elif event.key() in (Qt.Key_Right, Qt.Key_D) and self.dir_player != Direction.LEFT:
             self.dir_player = Direction.RIGHT
+            self.update_game()
 
         elif event.matches(QKeySequence.Refresh):
             self.reset_game()
