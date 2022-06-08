@@ -191,6 +191,14 @@ class SnakeMainWindow(QMainWindow):
             self.update()
             return
 
+        elif event.key() == Qt.Key_Plus:
+            self.fps += 1
+            self.timer.setInterval(int(1000 / self.fps))
+
+        elif event.key() == Qt.Key_Minus:
+            self.fps = max(1, self.fps - 1)
+            self.timer.setInterval(int(1000 / self.fps))
+
         else:
             event.ignore()
             return
