@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -42,11 +43,30 @@ class SnakeMainWindow : public QMainWindow
 		}
 	}
 
+	int getScore(void)
+	{
+		return std::max(0, int(snakeParts.size() - 1));
+	}
+
 	void paintEvent(QPaintEvent *)
 	{
 		QPainter painter(this);
 		painter.setRenderHint(QPainter::Antialiasing);
 		painter.setBrush(Qt::NoBrush);
+
+		if (gameOver) {
+			QFont font = painter.font();
+			font.setPixelSize(48);
+			font.setBold(true);
+			painter.setFont(font);
+
+			painter.drawText(
+				QRect(0, 0, width(), height()),
+				Qt::AlignCenter | Qt::AlignVCenter,
+				QString(("GAME OVER\n\nScore: " + std::to_string(getScore())).c_str())
+			);
+			return;
+		}
 
 		// Draw tail
 		painter.setPen(QPen(colourTail));
@@ -110,6 +130,17 @@ class SnakeMainWindow : public QMainWindow
 private Q_SLOTS:
 	void updateGame(void)
 	{
+		for (int i = 0; i < int(snakeParts.size() - 1); i++)
+		{
+			Point part = snakeParts[i];
+			if (part.x == posPlayer.x && part.y == posPlayer.y) {
+				gameOver = true;
+				timer->stop();
+				update();
+				return;
+			}
+		}
+
 		if (posPlayer.x == posApple.x && posPlayer.y == posApple.y) {
 			snakeParts.push_back(posPlayer);
 			placeApple();
