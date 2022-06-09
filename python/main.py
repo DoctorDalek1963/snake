@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# snake - A simple snake game in Python
+# snake - The same simple snake game in multiple languages
 # Copyright (C) 2022 D. Dyson (DoctorDalek1963)
 
 # This program is licensed under GNU GPLv3, available here:
