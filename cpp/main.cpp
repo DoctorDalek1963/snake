@@ -283,6 +283,12 @@ int main(int argc, char **argv)
 	QApplication app(fakeArgc, nullptr);
 
 	InputParser input(argc, argv);
+
+	if (input.cmdOptionExists("-h")) {
+		printf("Usage: ./main [-h] [-w width] [-H height] [-s cellsize] [-f fps]\n");
+		return 0;
+	}
+
 	const std::string &strWidth = input.getCmdOption("-w");
 	const std::string &strHeight = input.getCmdOption("-H");
 	const std::string &strCellsize = input.getCmdOption("-s");
