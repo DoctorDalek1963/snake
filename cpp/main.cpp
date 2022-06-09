@@ -48,6 +48,22 @@ class SnakeMainWindow : public QMainWindow
 		return std::max(0, int(snakeParts.size() - 1));
 	}
 
+	void resetGame(void)
+	{
+		gameOver = false;
+		snakeParts.clear();
+
+		posPlayer = {
+			rand() % this->gridWidth,
+			rand() % this->gridHeight
+		};
+		dirPlayer = std::nullopt;
+		placeApple();
+
+		timerStarted = false;
+		timer->stop();
+	}
+
 	void paintEvent(QPaintEvent *)
 	{
 		QPainter painter(this);
@@ -127,6 +143,11 @@ class SnakeMainWindow : public QMainWindow
 
 		} else if ((key == Qt::Key_Right || key == Qt::Key_D) && dirPlayer != LEFT) {
 			dirPlayer = RIGHT;
+
+		} else if (event->matches(QKeySequence::Refresh)) {
+			resetGame();
+			update();
+			return;
 
 		} else if (key == Qt::Key_Plus) {
 			fps++;
