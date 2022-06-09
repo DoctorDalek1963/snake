@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include <QApplication>
+#include <QKeyEvent>
 #include <QMainWindow>
 #include <QPainter>
 #include <QTimer>
@@ -68,6 +69,33 @@ class SnakeMainWindow : public QMainWindow
 			gridCellSize,
 			colourPlayer
 		);
+	}
+
+	void keyPressEvent(QKeyEvent *event)
+	{
+		int key = event->key();
+
+		if ((key == Qt::Key_Up || key == Qt::Key_W) && dirPlayer != DOWN){
+			dirPlayer = UP;
+
+		} else if ((key == Qt::Key_Down || key == Qt::Key_S) && dirPlayer != UP) {
+			dirPlayer = DOWN;
+
+		} else if ((key == Qt::Key_Left || key == Qt::Key_A) && dirPlayer != RIGHT) {
+			dirPlayer = LEFT;
+
+		} else if ((key == Qt::Key_Right || key == Qt::Key_D) && dirPlayer != LEFT) {
+			dirPlayer = RIGHT;
+
+		} else {
+			event->ignore();
+			return;
+		}
+
+		updateGame();
+
+		if (!timerStarted)
+			timer->start(int(1000 / fps));
 	}
 
 private Q_SLOTS:
