@@ -48,7 +48,16 @@ class SnakeMainWindow : public QMainWindow
 		painter.setRenderHint(QPainter::Antialiasing);
 		painter.setBrush(Qt::NoBrush);
 
-		// TODO: Draw tail
+		// Draw tail
+		painter.setPen(QPen(colourTail));
+		for (Point part : snakeParts)
+			painter.fillRect(
+				int(gridCellSize * (part.x + 0.1)),
+				int(gridCellSize * (part.y + 0.1)),
+				int(0.8 * gridCellSize),
+				int(0.8 * gridCellSize),
+				colourTail
+			);
 
 		// Draw apple
 		painter.setPen(QPen(colourApple));
@@ -101,6 +110,11 @@ class SnakeMainWindow : public QMainWindow
 private Q_SLOTS:
 	void updateGame(void)
 	{
+		if (posPlayer.x == posApple.x && posPlayer.y == posApple.y) {
+			snakeParts.push_back(posPlayer);
+			placeApple();
+		}
+
 		if (dirPlayer == UP) {
 			posPlayer = { posPlayer.x, (posPlayer.y - 1 + gridHeight) % gridHeight };
 
@@ -113,6 +127,11 @@ private Q_SLOTS:
 		} else if (dirPlayer == RIGHT) {
 			posPlayer = { (posPlayer.x + 1 + gridWidth) % gridWidth, posPlayer.y };
 		}
+
+		if (snakeParts.size() != 0)
+			snakeParts.erase(snakeParts.begin());
+
+		snakeParts.push_back(posPlayer);
 
 		update();
 	}
