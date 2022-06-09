@@ -98,6 +98,18 @@ class SnakeMainWindow : public QMainWindow
 			gridCellSize,
 			colourPlayer
 		);
+
+		painter.setPen(QPen(QColor(0, 0, 0)));
+
+		QFont font = painter.font();
+		font.setPixelSize(24);
+		painter.setFont(font);
+
+		painter.drawText(
+			QRect(10, 10, 100, 30),
+			Qt::AlignLeft | Qt::AlignTop,
+			QString(("Score: " + std::to_string(getScore())).c_str())
+		);
 	}
 
 	void keyPressEvent(QKeyEvent *event)
