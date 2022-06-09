@@ -296,15 +296,25 @@ int main(int argc, char **argv)
 
 	int width, height, cellsize, fps;
 
-	if (!strWidth.empty() && isInteger(strWidth))
+	if (!strWidth.empty() && isInteger(strWidth)) {
 		width = atoi(strWidth.c_str());
-	else
-		width = 16;
 
-	if (!strHeight.empty() && isInteger(strHeight))
+		if (width < 3) {
+			printf("ERROR: Minimum board size is 3x3\n");
+			return 1;
+		}
+
+	} else width = 16;
+
+	if (!strHeight.empty() && isInteger(strHeight)) {
 		height = atoi(strHeight.c_str());
-	else
-		height = 12;
+
+		if (height < 3) {
+			printf("ERROR: Minimum board size is 3x3\n");
+			return 1;
+		}
+
+	} else height = 12;
 
 	if (!strCellsize.empty() && isInteger(strCellsize))
 		cellsize = atoi(strCellsize.c_str());
