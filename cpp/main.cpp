@@ -102,13 +102,16 @@ private Q_SLOTS:
 	void updateGame(void)
 	{
 		if (dirPlayer == UP) {
-			posPlayer = { posPlayer.x, (posPlayer.y - 1) % gridHeight };
+			posPlayer = { posPlayer.x, (posPlayer.y - 1 + gridHeight) % gridHeight };
+
 		} else if (dirPlayer == DOWN) {
-			posPlayer = { posPlayer.x, (posPlayer.y + 1) % gridHeight };
+			posPlayer = { posPlayer.x, (posPlayer.y + 1 + gridHeight) % gridHeight };
+
 		} else if (dirPlayer == LEFT) {
-			posPlayer = { (posPlayer.x - 1) % gridWidth, posPlayer.y };
+			posPlayer = { (posPlayer.x - 1 + gridWidth) % gridWidth, posPlayer.y };
+
 		} else if (dirPlayer == RIGHT) {
-			posPlayer = { (posPlayer.x + 1) % gridWidth, posPlayer.y };
+			posPlayer = { (posPlayer.x + 1 + gridWidth) % gridWidth, posPlayer.y };
 		}
 
 		update();
