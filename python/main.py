@@ -49,6 +49,7 @@ class SnakeMainWindow(QMainWindow):
         self.game_over = False
 
         self.setFixedSize(self.grid_cell_size * self.grid_width, self.grid_cell_size * self.grid_height)
+        self.setWindowTitle('Snake')
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_game)
