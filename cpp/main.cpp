@@ -53,8 +53,8 @@ class SnakeMainWindow : public QMainWindow
 		// Draw apple
 		painter.setPen(QPen(colourApple));
 		painter.fillRect(
-			gridCellSize * int(posApple.x + 0.15),
-			gridCellSize * int(posApple.y + 0.15),
+			int(gridCellSize * (posApple.x + 0.15)),
+			int(gridCellSize * (posApple.y + 0.15)),
 			int(0.7 * gridCellSize),
 			int(0.7 * gridCellSize),
 			colourApple
