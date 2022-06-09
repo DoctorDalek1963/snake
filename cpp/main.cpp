@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QMainWindow>
+#include <QPainter>
 #include <QTimer>
 
 enum Direction { UP, DOWN, LEFT, RIGHT };
@@ -26,20 +27,59 @@ class SnakeMainWindow : public QMainWindow
 
 	void placeApple(void)
 	{
-		this->posApple = this->posPlayer;
+		posApple = posPlayer;
 
 		while (posApple.x == posPlayer.x && posApple.y == posPlayer.y) {
-			this->posApple = {
-				rand() % this->gridWidth,
-				rand() % this->gridHeight
+			posApple = {
+				rand() % gridWidth,
+				rand() % gridHeight
 			};
 		}
+	}
+
+	void paintEvent(QPaintEvent *)
+	{
+		QPainter painter(this);
+		painter.setRenderHint(QPainter::Antialiasing);
+		painter.setBrush(Qt::NoBrush);
+
+		// TODO: Draw tail
+
+		// Draw apple
+		painter.setPen(QPen(colourApple));
+		painter.fillRect(
+			gridCellSize * int(posApple.x + 0.15),
+			gridCellSize * int(posApple.y + 0.15),
+			int(0.7 * gridCellSize),
+			int(0.7 * gridCellSize),
+			colourApple
+		);
+
+		// Draw player head
+		painter.setPen(QPen(colourPlayer));
+		painter.fillRect(
+			posPlayer.x * gridCellSize,
+			posPlayer.y * gridCellSize,
+			gridCellSize,
+			gridCellSize,
+			colourPlayer
+		);
 	}
 
 private Q_SLOTS:
 	void updateGame(void)
 	{
-		// TODO
+		if (dirPlayer == UP) {
+			posPlayer = { posPlayer.x, (posPlayer.y - 1) % gridHeight };
+		} else if (dirPlayer == DOWN) {
+			posPlayer = { posPlayer.x, (posPlayer.y + 1) % gridHeight };
+		} else if (dirPlayer == LEFT) {
+			posPlayer = { (posPlayer.x - 1) % gridWidth, posPlayer.y };
+		} else if (dirPlayer == RIGHT) {
+			posPlayer = { (posPlayer.x + 1) % gridWidth, posPlayer.y };
+		}
+
+		update();
 	}
 
 public:
