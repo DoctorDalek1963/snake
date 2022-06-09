@@ -155,7 +155,7 @@ class SnakeMainWindow : public QMainWindow
 			timer->setInterval(int(1000 / fps));
 
 		} else if (key == Qt::Key_Minus) {
-			std::max(1, fps - 1);
+			fps = std::max(1, fps - 1);
 			timer->setInterval(int(1000 / fps));
 
 		} else {
