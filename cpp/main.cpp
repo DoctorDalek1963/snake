@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 #include <QApplication>
 #include <QMainWindow>
 #include <QPainter>
@@ -107,6 +111,8 @@ public:
 
 int main()
 {
+	srand(time(NULL));
+
 	int fakeArgc = 0;
 	QApplication app(fakeArgc, nullptr);
 
