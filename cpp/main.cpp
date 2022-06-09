@@ -128,6 +128,14 @@ class SnakeMainWindow : public QMainWindow
 		} else if ((key == Qt::Key_Right || key == Qt::Key_D) && dirPlayer != LEFT) {
 			dirPlayer = RIGHT;
 
+		} else if (key == Qt::Key_Plus) {
+			fps++;
+			timer->setInterval(int(1000 / fps));
+
+		} else if (key == Qt::Key_Minus) {
+			std::max(1, fps - 1);
+			timer->setInterval(int(1000 / fps));
+
 		} else {
 			event->ignore();
 			return;
