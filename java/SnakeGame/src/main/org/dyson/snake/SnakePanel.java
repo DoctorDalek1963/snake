@@ -35,14 +35,13 @@ public class SnakePanel extends JPanel implements KeyListener {
 	private final TimerTask timerTask = new TimerTask() { @Override public void run() { updateGame(); }};
 	private boolean timerStarted;
 
-	private final JFrame frame = new JFrame("Snake (Java with Swing)");
-
 	SnakePanel(int width, int height, int gridCellSize, int fps) {
 		super();
 
 		this.setSize(width * gridCellSize, height * gridCellSize);
 		this.setVisible(true);
 
+		JFrame frame = new JFrame("Snake (Java with Swing)");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(this.getSize());
 		frame.addKeyListener(this);
