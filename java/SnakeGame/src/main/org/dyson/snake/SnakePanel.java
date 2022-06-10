@@ -73,16 +73,16 @@ public class SnakePanel extends JPanel implements KeyListener {
 
 	private void updateGame() {
 		if (dirPlayer == Direction.UP) {
-			posPlayer = new Point(posPlayer.x, (posPlayer.y - 1 + gridHeight) % gridHeight);
+			posPlayer.y = (posPlayer.y - 1 + gridHeight) % gridHeight;
 
 		} else if (dirPlayer == Direction.DOWN) {
-			posPlayer = new Point(posPlayer.x, (posPlayer.y + 1 + gridHeight) % gridHeight);
+			posPlayer.y = (posPlayer.y + 1 + gridHeight) % gridHeight;
 
 		} else if (dirPlayer == Direction.LEFT) {
-			posPlayer = new Point((posPlayer.x - 1 + gridWidth) % gridWidth, posPlayer.y);
+			posPlayer.x = (posPlayer.x - 1 + gridWidth) % gridWidth;
 
 		} else if (dirPlayer == Direction.RIGHT) {
-			posPlayer = new Point((posPlayer.x + 1 + gridWidth) % gridWidth, posPlayer.y);
+			posPlayer.x = (posPlayer.x + 1 + gridWidth) % gridWidth;
 		}
 
 		repaint();
