@@ -10,7 +10,6 @@ package org.dyson.snake;
 
 public class Main {
 	public static void main (String[] args) {
-		SnakeMainWindow mainWindow = new SnakeMainWindow(16, 12, 50, 5);
-		mainWindow.setVisible(true);
+		SnakePanel mainWindow = new SnakePanel(16, 12, 50, 5);
 	}
 }

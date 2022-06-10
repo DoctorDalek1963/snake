@@ -31,9 +31,21 @@ public class SnakePanel extends JPanel {
 
 	private final Timer timer = new Timer();
 	private final TimerTask timerTask = new TimerTask() { @Override public void run() { updateGame(); }};
+	private boolean timerStarted;
+
+	private final JFrame frame = new JFrame("Snake (Java with Swing)");
 
 	SnakePanel(int width, int height, int gridCellSize, int fps) {
 		super();
+
+		this.setSize(width * gridCellSize, height * gridCellSize);
+		this.setVisible(true);
+
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(this.getSize());
+		frame.addKeyListener(this);
+		frame.add(this);
+		frame.setVisible(true);
 
 		this.gridWidth = width;
 		this.gridHeight = height;
@@ -46,9 +58,7 @@ public class SnakePanel extends JPanel {
 		this.posApple = new Point(0, 0);
 		placeApple();
 
-		setSize(gridWidth * this.gridCellSize, gridHeight * this.gridCellSize);
-
-		timer.scheduleAtFixedRate(timerTask, 0, 1000 / this.fps);
+		timerStarted = false;
 	}
 
 	private void placeApple() {
