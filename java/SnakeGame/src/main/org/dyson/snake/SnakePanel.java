@@ -23,14 +23,14 @@ public class SnakePanel extends JPanel {
 	private final int gridWidth, gridHeight, gridCellSize;
 	private int fps;
 
-	Point posPlayer, posApple;
-	Optional<Direction> dirPlayer;
+	private Point posPlayer, posApple;
+	private Optional<Direction> dirPlayer;
 
-	ArrayList<Point> snakeParts = new ArrayList<>();
-	boolean gameOver = false;
+	private ArrayList<Point> snakeParts = new ArrayList<>();
+	private boolean gameOver = false;
 
-	Timer timer = new Timer();
-	TimerTask timerTask = new TimerTask() { @Override public void run() { updateGame(); }};
+	private final Timer timer = new Timer();
+	private final TimerTask timerTask = new TimerTask() { @Override public void run() { updateGame(); }};
 
 	SnakePanel(int width, int height, int gridCellSize, int fps) {
 		super();
@@ -46,9 +46,9 @@ public class SnakePanel extends JPanel {
 		this.posApple = new Point(0, 0);
 		placeApple();
 
-		setSize(gridWidth * gridCellSize, gridHeight * gridCellSize);
+		setSize(gridWidth * this.gridCellSize, gridHeight * this.gridCellSize);
 
-		timer.scheduleAtFixedRate(timerTask, 0, 1000 / fps);
+		timer.scheduleAtFixedRate(timerTask, 0, 1000 / this.fps);
 	}
 
 	private void placeApple() {
