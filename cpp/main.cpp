@@ -173,8 +173,10 @@ class SnakeMainWindow : public QMainWindow
 
 		updateGame();
 
-		if (!timerStarted)
+		if (!timerStarted) {
 			timer->start(int(1000 / fps));
+			timerStarted = true;
+		}
 	}
 
 private Q_SLOTS:
