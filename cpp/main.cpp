@@ -235,7 +235,7 @@ public:
 		placeApple();
 
 		setFixedSize(this->gridCellSize * this->gridWidth, this->gridCellSize * this->gridHeight);
-		setWindowTitle("Snake (C++)");
+		setWindowTitle("Snake (C++ with Qt5)");
 
 		this->timer = new QTimer(this);
 		connect(this->timer, &QTimer::timeout, this, &SnakeMainWindow::updateGame);
