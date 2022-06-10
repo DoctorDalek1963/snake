@@ -24,9 +24,9 @@ struct Point { int x, y; };
 
 class SnakeMainWindow : public QMainWindow
 {
-	const QColor colourPlayer = QColor(0xe7, 0x03, 0x03);
-	const QColor colourTail = QColor(0xfb, 0x41, 0x7c);
-	const QColor colourApple = QColor(0x09, 0xdd, 0x01);
+	const QColor colourPlayer = QColor(0x05, 0x78, 0x12);
+	const QColor colourTail = QColor(0x6c, 0xfb, 0x4b);
+	const QColor colourApple = QColor(0xfb, 0x06, 0x06);
 
 	const int gridWidth, gridHeight, gridCellSize;
 	int fps;

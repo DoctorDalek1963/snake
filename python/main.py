@@ -24,9 +24,9 @@ Direction = enum.Enum('Direction', 'UP DOWN LEFT RIGHT')
 class SnakeMainWindow(QMainWindow):
     """A simple main window class to contain the game."""
 
-    colour_player: QColor = QColor(0xe7, 0x03, 0x03)  # Red
-    colour_tail: QColor = QColor(0xfb, 0x41, 0x7c)  # Pink
-    colour_apple: QColor = QColor(0x09, 0xdd, 0x01)  # Green
+    colour_player: QColor = QColor(0x05, 0x78, 0x12)  # Red
+    colour_tail: QColor = QColor(0x6c, 0xfb, 0x4b); # Pink
+    colour_apple: QColor = QColor(0xfb, 0x06, 0x06); # Green
 
     def __init__(self, *, width: int, height: int, grid_cell_size: int, fps: int):
         """Create the main window."""
