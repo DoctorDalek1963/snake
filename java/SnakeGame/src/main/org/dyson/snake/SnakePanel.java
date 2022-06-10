@@ -9,11 +9,13 @@
 package org.dyson.snake;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.*;
 import java.util.Timer;
 import javax.swing.*;
 
-public class SnakePanel extends JPanel {
+public class SnakePanel extends JPanel implements KeyListener {
 	private static final Random random = new Random();
 
 	private final Color colourPlayer = new Color(0xe7, 0x03, 0x03);
@@ -24,7 +26,7 @@ public class SnakePanel extends JPanel {
 	private int fps;
 
 	private Point posPlayer, posApple;
-	private Optional<Direction> dirPlayer;
+	private Direction dirPlayer;
 
 	private ArrayList<Point> snakeParts = new ArrayList<>();
 	private boolean gameOver = false;
@@ -53,7 +55,7 @@ public class SnakePanel extends JPanel {
 		this.fps = fps;
 
 		this.posPlayer = new Point(random.nextInt(gridWidth), random.nextInt(gridHeight));
-		this.dirPlayer = Optional.empty();
+		this.dirPlayer = Direction.NONE;
 
 		this.posApple = new Point(0, 0);
 		placeApple();
@@ -70,6 +72,19 @@ public class SnakePanel extends JPanel {
 	}
 
 	private void updateGame() {
+		if (dirPlayer == Direction.UP) {
+			posPlayer = new Point(posPlayer.x, (posPlayer.y - 1 + gridHeight) % gridHeight);
+
+		} else if (dirPlayer == Direction.DOWN) {
+			posPlayer = new Point(posPlayer.x, (posPlayer.y + 1 + gridHeight) % gridHeight);
+
+		} else if (dirPlayer == Direction.LEFT) {
+			posPlayer = new Point((posPlayer.x - 1 + gridWidth) % gridWidth, posPlayer.y);
+
+		} else if (dirPlayer == Direction.RIGHT) {
+			posPlayer = new Point((posPlayer.x + 1 + gridWidth) % gridWidth, posPlayer.y);
+		}
+
 		repaint();
 	}
 
@@ -95,4 +110,33 @@ public class SnakePanel extends JPanel {
 				gridCellSize
 		);
 	}
+
+	@Override public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		int code = e.getKeyCode();
+
+		if ((code == KeyEvent.VK_UP || code == KeyEvent.VK_W) && dirPlayer != Direction.DOWN) {
+			dirPlayer = Direction.UP;
+
+		} else if ((code == KeyEvent.VK_DOWN || code == KeyEvent.VK_S) && dirPlayer != Direction.UP) {
+			dirPlayer = Direction.DOWN;
+
+		} else if ((code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) && dirPlayer != Direction.RIGHT) {
+			dirPlayer = Direction.LEFT;
+
+		} else if ((code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_D) && dirPlayer != Direction.LEFT) {
+			dirPlayer = Direction.RIGHT;
+		}
+
+		updateGame();
+
+		if (!timerStarted) {
+			timer.scheduleAtFixedRate(timerTask, 0, 1000 / fps);
+			timerStarted = true;
+		}
+	}
+
+	@Override public void keyReleased(KeyEvent e) {}
 }
