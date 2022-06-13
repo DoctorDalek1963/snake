@@ -71,18 +71,15 @@ public class SnakePanel extends JPanel implements KeyListener {
 	}
 
 	private void updateGame() {
-		if (dirPlayer == Direction.UP) {
-			posPlayer.y = (posPlayer.y - 1 + gridHeight) % gridHeight;
 
-		} else if (dirPlayer == Direction.DOWN) {
-			posPlayer.y = (posPlayer.y + 1 + gridHeight) % gridHeight;
-
-		} else if (dirPlayer == Direction.LEFT) {
-			posPlayer.x = (posPlayer.x - 1 + gridWidth) % gridWidth;
-
-		} else if (dirPlayer == Direction.RIGHT) {
-			posPlayer.x = (posPlayer.x + 1 + gridWidth) % gridWidth;
+		switch (dirPlayer) {
+			case UP -> posPlayer.y = (posPlayer.y - 1 + gridHeight) % gridHeight;
+			case DOWN -> posPlayer.y = (posPlayer.y + 1 + gridHeight) % gridHeight;
+			case LEFT -> posPlayer.x = (posPlayer.x - 1 + gridWidth) % gridWidth;
+			case RIGHT -> posPlayer.x = (posPlayer.x + 1 + gridWidth) % gridWidth;
 		}
+
+
 
 		repaint();
 	}
