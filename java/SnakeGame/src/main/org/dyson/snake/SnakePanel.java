@@ -18,9 +18,9 @@ import javax.swing.*;
 public class SnakePanel extends JPanel implements KeyListener {
 	private static final Random random = new Random();
 
-	private final Color colourPlayer = new Color(0xe7, 0x03, 0x03);
-	private final Color colourTail = new Color(0xfb, 0x41, 0x7c);
-	private final Color colourApple = new Color(0x09, 0xdd, 0x01);
+	private final Color colourPlayer = new Color(0x05, 0x78, 0x12);
+	private final Color colourTail = new Color(0x6c, 0xfb, 0x4b);
+	private final Color colourApple = new Color(0xfb, 0x06, 0x06);
 
 	private final int gridWidth, gridHeight, gridCellSize;
 	private int fps;
