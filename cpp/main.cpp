@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <cstdlib>
+#include <optional>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
